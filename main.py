@@ -10,7 +10,7 @@ logger = logging.getLogger(__name__)
 
 def main():
     random.seed(42)
-    board = snake.Board(10, 5)
+    board = snake.Board(10, 10)
     ai = naive.Ai(board)
     if len(sys.argv) > 1:
         if sys.argv[1] == 'plain':
@@ -23,10 +23,8 @@ def main():
                 actions = ai.get_actions(board)
                 if not isinstance(actions, list):
                     logger.debug('no moves')
-                    time.sleep(100)
                 if not actions:
                     logger.debug('no moves')
-                    logger.debug((board.snake, board.food))
                     raise board.NotSafeSnake()
                 logger.debug((board.snake, actions))
                 try:
@@ -34,11 +32,7 @@ def main():
                         console.draw(board)
                         # time.sleep(0.01)
                 except board.NotSafeSnake:
-                    time.sleep(1000)
                     raise
-
-                logger.debug(board.snake)
-                logger.debug(board.food)
     except board.Win:
         print 'You Win!!! score:{}, moves:{}'.format(board.score, board.moves)
     except board.NotSafeSnake:
